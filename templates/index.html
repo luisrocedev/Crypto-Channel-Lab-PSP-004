@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crypto Channel Lab · PSP</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="panel hero">
+      <div>
+        <h1>Crypto Channel Lab</h1>
+        <p>Protección de comunicación entre dos puntos con cifrado por clases (César y XOR), persistencia y auditoría.</p>
+      </div>
+      <div class="badge">TCP seguro: {{ tcp_port }}</div>
+    </section>
+
+    <section class="kpis">
+      <article class="kpi"><span>Total mensajes</span><strong id="kpiMessages">0</strong></article>
+      <article class="kpi"><span>César</span><strong id="kpiCaesar">0</strong></article>
+      <article class="kpi"><span>XOR</span><strong id="kpiXor">0</strong></article>
+      <article class="kpi"><span>Desencriptados</span><strong id="kpiDec">0</strong></article>
+    </section>
+
+    <section class="panel two-col">
+      <div>
+        <h2>Crear clave</h2>
+        <label>Nombre<input id="keyName" value="mi_clave" maxlength="80" /></label>
+        <label>Tipo
+          <select id="keyCipher">
+            <option value="caesar">César</option>
+            <option value="xor">XOR</option>
+          </select>
+        </label>
+        <label id="shiftLabel">Shift César<input id="keyShift" type="number" value="7" /></label>
+        <label id="secretLabel" class="hidden">Secreto XOR<input id="keySecret" value="DAM2-SECRET" /></label>
+        <button id="createKeyBtn">Guardar clave</button>
+      </div>
+
+      <div>
+        <h2>Enviar mensaje cifrado (HTTP)</h2>
+        <label>Emisor<input id="sender" value="nodo-a" maxlength="80" /></label>
+        <label>Receptor<input id="receiver" value="nodo-b" maxlength="80" /></label>
+        <label>Clave
+          <select id="keySelect"></select>
+        </label>
+        <label>Mensaje<textarea id="message" rows="4" maxlength="600">Mensaje de prueba protegido.</textarea></label>
+        <button id="sendBtn">Enviar cifrado</button>
+      </div>
+    </section>
+
+    <section class="panel two-col">
+      <div>
+        <h2>Mensajes cifrados</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Fecha</th><th>Canal</th><th>Clave</th><th>Cifrado</th><th>Payload</th><th></th></tr></thead>
+            <tbody id="msgBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <h2>Auditoría de descifrado</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Msg</th><th>Fecha</th><th>Actor</th><th>Preview</th></tr></thead>
+            <tbody id="auditBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
