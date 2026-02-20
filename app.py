@@ -269,8 +269,11 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
 
 def start_tcp_server() -> None:
     def run() -> None:
-        with ThreadedTCPServer(("0.0.0.0", TCP_PORT), SecureTCPHandler) as server:
-            server.serve_forever()
+        try:
+            with ThreadedTCPServer(("0.0.0.0", TCP_PORT), SecureTCPHandler) as server:
+                server.serve_forever()
+        except OSError as exc:
+            print(f"[TCP] No se pudo iniciar en :{TCP_PORT} — {exc}")
 
     thread = threading.Thread(target=run, daemon=True)
     thread.start()
