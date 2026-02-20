@@ -3,28 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crypto Channel Lab · PSP</title>
+  <title>Crypto Channel Lab</title>
   <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
   <main class="shell">
-    <section class="panel hero">
+
+    <!-- ───── Hero + Toolbar ───── -->
+    <header class="panel hero">
       <div>
         <h1>Crypto Channel Lab</h1>
-        <p>Protección de comunicación entre dos puntos con cifrado por clases (César y XOR), persistencia y auditoría.</p>
+        <p>Canal seguro con cifrado César, XOR y auditoría — TCP <code>{{ tcp_port }}</code></p>
       </div>
-      <div class="badge">TCP seguro: {{ tcp_port }}</div>
+      <div class="toolbar">
+        <span class="status-dot" id="statusDot" title="Estado del servidor"></span>
+        <button class="icon-btn" id="darkToggle" title="Alternar tema">🌙</button>
+        <button class="icon-btn" id="exportBtn" title="Exportar JSON">⬇️</button>
+        <label class="icon-btn" title="Importar JSON">⬆️<input type="file" id="importFile" accept=".json" hidden /></label>
+        <button class="icon-btn" id="seedBtn" title="Seed datos de ejemplo">🌱</button>
+      </div>
+    </header>
+
+    <!-- ───── Tabs ───── -->
+    <nav class="tabs" id="tabBar">
+      <button class="tab active" data-tab="dashboard">Dashboard</button>
+      <button class="tab" data-tab="keys">Claves</button>
+      <button class="tab" data-tab="send">Enviar</button>
+      <button class="tab" data-tab="messages">Mensajes</button>
+      <button class="tab" data-tab="audit">Auditoría</button>
+    </nav>
+
+    <!-- ═══════ TAB: Dashboard ═══════ -->
+    <section class="tab-panel active" id="tab-dashboard">
+      <div class="kpis">
+        <article class="kpi kpi--purple"><span>Total mensajes</span><strong id="kpiMessages">0</strong></article>
+        <article class="kpi kpi--green"><span>César</span><strong id="kpiCaesar">0</strong></article>
+        <article class="kpi kpi--amber"><span>XOR</span><strong id="kpiXor">0</strong></article>
+        <article class="kpi kpi--cyan"><span>Desencriptados</span><strong id="kpiDec">0</strong></article>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <h2>Últimos mensajes</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Canal</th><th>Cifrado</th><th>Emisor</th><th>Fecha</th></tr></thead>
+              <tbody id="dashMsgBody"></tbody>
+            </table>
+          </div>
+          <div class="empty-state hidden" id="dashMsgEmpty">📭 Sin mensajes aún</div>
+        </div>
+        <div class="panel">
+          <h2>Últimas auditorías</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Msg</th><th>Actor</th><th>Fecha</th></tr></thead>
+              <tbody id="dashAuditBody"></tbody>
+            </table>
+          </div>
+          <div class="empty-state hidden" id="dashAuditEmpty">📋 Sin auditorías aún</div>
+        </div>
+      </div>
     </section>
 
-    <section class="kpis">
-      <article class="kpi"><span>Total mensajes</span><strong id="kpiMessages">0</strong></article>
-      <article class="kpi"><span>César</span><strong id="kpiCaesar">0</strong></article>
-      <article class="kpi"><span>XOR</span><strong id="kpiXor">0</strong></article>
-      <article class="kpi"><span>Desencriptados</span><strong id="kpiDec">0</strong></article>
-    </section>
-
-    <section class="panel two-col">
-      <div>
+    <!-- ═══════ TAB: Claves ═══════ -->
+    <section class="tab-panel" id="tab-keys">
+      <div class="panel form-card">
         <h2>Crear clave</h2>
         <label>Nombre<input id="keyName" value="mi_clave" maxlength="80" /></label>
         <label>Tipo
@@ -33,34 +77,59 @@
             <option value="xor">XOR</option>
           </select>
         </label>
-        <label id="shiftLabel">Shift César<input id="keyShift" type="number" value="7" /></label>
+        <label id="shiftLabel">Shift César<input id="keyShift" type="number" value="7" min="1" max="25" /></label>
         <label id="secretLabel" class="hidden">Secreto XOR<input id="keySecret" value="DAM2-SECRET" /></label>
         <button id="createKeyBtn">Guardar clave</button>
       </div>
 
-      <div>
+      <div class="panel">
+        <h2>Claves registradas</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Nombre</th><th>Cifrado</th><th>Shift</th><th>Creada</th></tr></thead>
+            <tbody id="keysBody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state hidden" id="keysEmpty">🔑 Sin claves registradas</div>
+      </div>
+    </section>
+
+    <!-- ═══════ TAB: Enviar ═══════ -->
+    <section class="tab-panel" id="tab-send">
+      <div class="panel form-card">
         <h2>Enviar mensaje cifrado (HTTP)</h2>
         <label>Emisor<input id="sender" value="nodo-a" maxlength="80" /></label>
         <label>Receptor<input id="receiver" value="nodo-b" maxlength="80" /></label>
-        <label>Clave
-          <select id="keySelect"></select>
+        <label>Clave<select id="keySelect"></select></label>
+        <label>
+          Mensaje
+          <textarea id="message" rows="4" maxlength="600">Mensaje de prueba protegido.</textarea>
+          <small class="char-count"><span id="charCount">0</span> / 600</small>
         </label>
-        <label>Mensaje<textarea id="message" rows="4" maxlength="600">Mensaje de prueba protegido.</textarea></label>
         <button id="sendBtn">Enviar cifrado</button>
       </div>
     </section>
 
-    <section class="panel two-col">
-      <div>
-        <h2>Mensajes cifrados</h2>
+    <!-- ═══════ TAB: Mensajes ═══════ -->
+    <section class="tab-panel" id="tab-messages">
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Mensajes cifrados</h2>
+          <input class="search-input" id="msgSearch" placeholder="Buscar…" />
+        </div>
         <div class="table-wrap">
           <table>
             <thead><tr><th>ID</th><th>Fecha</th><th>Canal</th><th>Clave</th><th>Cifrado</th><th>Payload</th><th></th></tr></thead>
             <tbody id="msgBody"></tbody>
           </table>
         </div>
+        <div class="empty-state hidden" id="msgEmpty">📭 Sin mensajes registrados</div>
       </div>
-      <div>
+    </section>
+
+    <!-- ═══════ TAB: Auditoría ═══════ -->
+    <section class="tab-panel" id="tab-audit">
+      <div class="panel">
         <h2>Auditoría de descifrado</h2>
         <div class="table-wrap">
           <table>
@@ -68,9 +137,27 @@
             <tbody id="auditBody"></tbody>
           </table>
         </div>
+        <div class="empty-state hidden" id="auditEmpty">📋 Sin auditorías registradas</div>
       </div>
     </section>
+
+    <!-- ───── Footer ───── -->
+    <footer class="footer">Crypto Channel Lab · Luis Rodríguez Cedeño · DAM2 PSP</footer>
   </main>
+
+  <!-- ───── Toast container ───── -->
+  <div id="toastBox" class="toast-box"></div>
+
+  <!-- ───── Confirm overlay ───── -->
+  <div id="confirmOverlay" class="confirm-overlay hidden">
+    <div class="confirm-card">
+      <p id="confirmMsg"></p>
+      <div class="confirm-actions">
+        <button id="confirmNo" class="btn-cancel">Cancelar</button>
+        <button id="confirmYes" class="btn-ok">Confirmar</button>
+      </div>
+    </div>
+  </div>
 
   <script src="/static/app.js"></script>
 </body>
