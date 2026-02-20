@@ -25,18 +25,18 @@
 
 ## ✨ Características principales
 
-| Categoría | Funcionalidad |
-|---|---|
-| 🔑 **Gestión de claves** | Creación, almacenamiento y rotación de claves César y XOR con persistencia en SQLite |
-| 📡 **Canal TCP seguro** | Servidor TCP multihilo (`ThreadingMixIn`) para envío/recepción de mensajes cifrados en tiempo real |
+| Categoría                  | Funcionalidad                                                                                                        |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| 🔑 **Gestión de claves**   | Creación, almacenamiento y rotación de claves César y XOR con persistencia en SQLite                                 |
+| 📡 **Canal TCP seguro**    | Servidor TCP multihilo (`ThreadingMixIn`) para envío/recepción de mensajes cifrados en tiempo real                   |
 | 🛡️ **Cifrados soportados** | **César** (desplazamiento Unicode) · **XOR** (Base64 + clave variable) · Arquitectura extensible vía `CipherFactory` |
-| 📊 **Dashboard en vivo** | KPIs en tiempo real · Tablas de últimos mensajes y auditorías · Auto-refresh cada 4 s |
-| 🔍 **Auditoría completa** | Registro de cada operación de descifrado con timestamp, canal y resultado verificado |
-| 🌙 **Dark mode** | Cambio de tema claro/oscuro con persistencia en `localStorage` |
-| 📦 **Export / Import** | Exportación e importación de datos completos en JSON para backup o migración |
-| 🎲 **Seed de datos** | Generación instantánea de 5 mensajes de prueba para demos rápidas |
-| 🔎 **Búsqueda en vivo** | Filtrado instantáneo sobre mensajes y auditorías sin recargar |
-| 📱 **Responsive** | Diseño adaptativo para escritorio, tablet y móvil |
+| 📊 **Dashboard en vivo**   | KPIs en tiempo real · Tablas de últimos mensajes y auditorías · Auto-refresh cada 4 s                                |
+| 🔍 **Auditoría completa**  | Registro de cada operación de descifrado con timestamp, canal y resultado verificado                                 |
+| 🌙 **Dark mode**           | Cambio de tema claro/oscuro con persistencia en `localStorage`                                                       |
+| 📦 **Export / Import**     | Exportación e importación de datos completos en JSON para backup o migración                                         |
+| 🎲 **Seed de datos**       | Generación instantánea de 5 mensajes de prueba para demos rápidas                                                    |
+| 🔎 **Búsqueda en vivo**    | Filtrado instantáneo sobre mensajes y auditorías sin recargar                                                        |
+| 📱 **Responsive**          | Diseño adaptativo para escritorio, tablet y móvil                                                                    |
 
 ---
 
@@ -68,35 +68,35 @@
 
 ## 📡 API REST
 
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| `GET` | `/api/keys` | Listar todas las claves registradas |
-| `POST` | `/api/keys` | Crear nueva clave (César o XOR) |
-| `POST` | `/api/messages/send` | Cifrar y enviar un mensaje |
-| `POST` | `/api/messages/decrypt` | Descifrar un mensaje existente |
-| `GET` | `/api/messages` | Obtener historial completo de mensajes |
-| `GET` | `/api/stats` | KPIs en tiempo real del sistema |
+| Método | Endpoint                | Descripción                            |
+| ------ | ----------------------- | -------------------------------------- |
+| `GET`  | `/api/keys`             | Listar todas las claves registradas    |
+| `POST` | `/api/keys`             | Crear nueva clave (César o XOR)        |
+| `POST` | `/api/messages/send`    | Cifrar y enviar un mensaje             |
+| `POST` | `/api/messages/decrypt` | Descifrar un mensaje existente         |
+| `GET`  | `/api/messages`         | Obtener historial completo de mensajes |
+| `GET`  | `/api/stats`            | KPIs en tiempo real del sistema        |
 
 ---
 
 ## 🛠️ Mejoras v2 implementadas
 
-| # | Mejora | Detalle |
-|---|--------|---------|
-| 1 | 🌙 Dark mode con persistencia | Toggle en toolbar, preferencia guardada en `localStorage` |
-| 2 | 🔔 Sistema de toasts | Notificaciones con 4 tonos: éxito, error, warning, info |
-| 3 | ⚠️ Diálogo de confirmación | `nousConfirm()` basado en Promises para acciones destructivas |
-| 4 | 📊 Dashboard con KPIs | Métricas en vivo: claves, mensajes HTTP/TCP, descifrados |
-| 5 | 📡 Status dot | Indicador de salud del backend con heartbeat automático |
-| 6 | 🏷️ Badges semánticos | Etiquetas de color para canales (HTTP/TCP) y algoritmos |
-| 7 | 🔢 Contador de caracteres | Feedback en tiempo real al redactar mensajes |
-| 8 | 📤 Exportar JSON | Backup completo de claves + mensajes + auditorías |
-| 9 | 📥 Importar JSON | Restauración desde archivo con validación de estructura |
-| 10 | 🎲 Seed de datos | 5 mensajes de demostración inyectados automáticamente |
-| 11 | 🔎 Búsqueda en vivo | Filtro instantáneo en tablas de mensajes y auditorías |
-| 12 | 📱 Responsive layout | Breakpoints a 1100 px y 700 px |
-| 13 | 🫙 Empty states | Mensajes informativos cuando las tablas están vacías |
-| 14 | ♻️ Auto-refresh | Refresco automático cada 4 segundos vía `setInterval` |
+| #   | Mejora                        | Detalle                                                       |
+| --- | ----------------------------- | ------------------------------------------------------------- |
+| 1   | 🌙 Dark mode con persistencia | Toggle en toolbar, preferencia guardada en `localStorage`     |
+| 2   | 🔔 Sistema de toasts          | Notificaciones con 4 tonos: éxito, error, warning, info       |
+| 3   | ⚠️ Diálogo de confirmación    | `nousConfirm()` basado en Promises para acciones destructivas |
+| 4   | 📊 Dashboard con KPIs         | Métricas en vivo: claves, mensajes HTTP/TCP, descifrados      |
+| 5   | 📡 Status dot                 | Indicador de salud del backend con heartbeat automático       |
+| 6   | 🏷️ Badges semánticos          | Etiquetas de color para canales (HTTP/TCP) y algoritmos       |
+| 7   | 🔢 Contador de caracteres     | Feedback en tiempo real al redactar mensajes                  |
+| 8   | 📤 Exportar JSON              | Backup completo de claves + mensajes + auditorías             |
+| 9   | 📥 Importar JSON              | Restauración desde archivo con validación de estructura       |
+| 10  | 🎲 Seed de datos              | 5 mensajes de demostración inyectados automáticamente         |
+| 11  | 🔎 Búsqueda en vivo           | Filtro instantáneo en tablas de mensajes y auditorías         |
+| 12  | 📱 Responsive layout          | Breakpoints a 1100 px y 700 px                                |
+| 13  | 🫙 Empty states               | Mensajes informativos cuando las tablas están vacías          |
+| 14  | ♻️ Auto-refresh               | Refresco automático cada 4 segundos vía `setInterval`         |
 
 ---
 
@@ -144,12 +144,12 @@ Crypto-Channel-Lab/
 
 ## 🧪 Tecnologías
 
-| Capa | Stack |
-|------|-------|
-| **Backend** | Python 3.12 · Flask 3.x · SQLite 3 · `socketserver.ThreadingMixIn` |
-| **Frontend** | HTML5 · CSS3 (custom properties) · JavaScript ES2022 (vanilla) |
-| **Cifrado** | César (Unicode shift) · XOR (Base64 + clave) · CipherFactory extensible |
-| **Red** | TCP multihilo con protocolo JSON `{action, key_name, text}` |
+| Capa         | Stack                                                                   |
+| ------------ | ----------------------------------------------------------------------- |
+| **Backend**  | Python 3.12 · Flask 3.x · SQLite 3 · `socketserver.ThreadingMixIn`      |
+| **Frontend** | HTML5 · CSS3 (custom properties) · JavaScript ES2022 (vanilla)          |
+| **Cifrado**  | César (Unicode shift) · XOR (Base64 + clave) · CipherFactory extensible |
+| **Red**      | TCP multihilo con protocolo JSON `{action, key_name, text}`             |
 
 ---
 
